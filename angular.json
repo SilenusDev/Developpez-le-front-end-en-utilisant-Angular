@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "olympic-games-starter:build:production"
+              "buildTarget": "olympic-games-starter:build:production"
             },
             "development": {
-              "browserTarget": "olympic-games-starter:build:development"
+              "buildTarget": "olympic-games-starter:build:development"
             }
           },
           "defaultConfiguration": "development"

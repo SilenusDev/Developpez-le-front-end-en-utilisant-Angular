@@ -1,3 +1,24 @@
-<h2>Olympic games app</h2>
+<!-- src/app/pages/home/home.component.html -->
+<div *ngIf="olympics$ | async as olympics; else loading">
+    <h2>Liste des pays participants</h2>
+    <ul>
+        <li *ngFor="let olympic of olympics">
+            {{ olympic.country }} - Participations : {{ olympic.participations.length }}
+            <ul>
+                <li *ngFor="let participation of olympic.participations">
+                    {{ participation.year }} à {{ participation.city }} : {{ participation.medalsCount }} médailles
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<ng-template #loading>
+<p>Chargement des données...</p>
+</ng-template>
+  
+
+
+
+<!-- <h2>Olympic games app</h2>
 <hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<p>{{ (olympics$ | async)?.length }} data loaded</p> -->

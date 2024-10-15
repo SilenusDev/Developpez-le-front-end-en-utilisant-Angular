@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Olympics } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-home',
@@ -11,18 +12,15 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 })
 export class HomeComponent implements OnInit {
   public olympics$: Observable<Olympics[] | null>;
-  public chartData: any[] = []; // Données pour le graphique
+  public chartData: { name: string; value: number }[] = [];
 
-  // Configuration du graphique
-  view: [number, number] = [700, 400]; // Taille du graphique
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Countries';
-  showYAxisLabel = true;
-  yAxisLabel = 'Medals Count';
+  // Pie chart options
+  view: [number, number] = [700, 400];
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+  legendPosition: LegendPosition = LegendPosition.Below;
 
   constructor(private olympicService: OlympicService) {
     this.olympics$ = this.olympicService.getOlympics();
@@ -32,16 +30,15 @@ export class HomeComponent implements OnInit {
     this.olympicService.loadInitialData().subscribe(
       (data) => {
         if (data) {
-          this.transformData(data); // Transformez les données pour le graphique
+          this.transformData(data);
         }
       },
       (error) => {
-        console.error('Erreur lors du chargement des données olympiques:', error);
+        console.error('Error loading Olympic data:', error);
       }
     );
   }
 
-  // Transformation des données pour ngx-charts
   private transformData(olympics: Olympics[]): void {
     this.chartData = olympics.map((olympic) => {
       const totalMedals = olympic.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
@@ -51,7 +48,68 @@ export class HomeComponent implements OnInit {
       };
     });
   }
+
+  onSelect(data: any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
 }
+
+
+
+
+// import { Component, OnInit } from '@angular/core';
+// import { Observable } from 'rxjs';
+// import { Olympics } from 'src/app/core/models/Olympic';
+// import { OlympicService } from 'src/app/core/services/olympic.service';
+
+// @Component({
+//   selector: 'app-home',
+//   templateUrl: './home.component.html',
+//   styleUrls: ['./home.component.scss'],
+// })
+// export class HomeComponent implements OnInit {
+//   public olympics$: Observable<Olympics[] | null>;
+//   public chartData: any[] = []; // Données pour le graphique
+
+//   // Configuration du graphique
+//   view: [number, number] = [700, 400]; // Taille du graphique
+//   showXAxis = true;
+//   showYAxis = true;
+//   gradient = false;
+//   showLegend = true;
+//   showXAxisLabel = true;
+//   xAxisLabel = 'Countries';
+//   showYAxisLabel = true;
+//   yAxisLabel = 'Medals Count';
+
+//   constructor(private olympicService: OlympicService) {
+//     this.olympics$ = this.olympicService.getOlympics();
+//   }
+
+//   ngOnInit(): void {
+//     this.olympicService.loadInitialData().subscribe(
+//       (data) => {
+//         if (data) {
+//           this.transformData(data); // Transformez les données pour le graphique
+//         }
+//       },
+//       (error) => {
+//         console.error('Erreur lors du chargement des données olympiques:', error);
+//       }
+//     );
+//   }
+
+//   // Transformation des données pour ngx-charts
+//   private transformData(olympics: Olympics[]): void {
+//     this.chartData = olympics.map((olympic) => {
+//       const totalMedals = olympic.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
+//       return {
+//         name: olympic.country,
+//         value: totalMedals,
+//       };
+//     });
+//   }
+// }
 
 // // src/app/pages/home/home.component.ts
 // import { Component, OnInit } from '@angular/core';

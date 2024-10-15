@@ -1,21 +1,56 @@
 <!-- src/app/pages/home/home.component.html -->
 <div class="container m-5">
-    <div class="card shadow-lg p-3 d-flex justify-content-center align-items-center">
-        <div *ngIf="chartData.length > 0" class="d-flex justify-content-center align-items-center w-100">
-            <ngx-charts-bar-vertical
-            [view]="view"
-            [scheme]="'cool'"
-            [results]="chartData"
-            [gradient]="gradient"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel">
-            </ngx-charts-bar-vertical>
+    <div class="card shadow-lg p-3 d-flex flex-column justify-content-center align-items-center">
+        <div class="btn btn-success btn-lg m-2" >Medals per Country</div>
+        <div>
+            <div class="btn btn-outline-success m-2">
+                Number of JOs<br>
+                <strong></strong>
+            </div>
+            <div class="btn btn-outline-success m-2">
+                Number of country<br>
+                <strong></strong>
+            </div>
         </div>
+        <div class="chart-container">
+            <ngx-charts-pie-chart
+                [view]="view"
+                [scheme]="'cool'"
+                [results]="chartData"
+                [gradient]="gradient"
+                
+                [labels]="showLabels"
+                [doughnut]="isDoughnut"
+                
+                (select)="onSelect($event)"
+            >
+            </ngx-charts-pie-chart>
+          </div>
+          
+        <!-- <div *ngIf="(olympics$ | async) as olympics">
+            <h2>Olympic Data</h2>
+            <ul>
+                <li *ngFor="let country of olympics">
+                {{ country.country }}: {{ country.participations[country.participations.length - 1].medalsCount }} medals
+                </li>
+            </ul>
+        </div> -->
+
+        <!-- <div *ngIf="chartData.length > 0" class="d-flex justify-content-center align-items-center w-100">
+            <ngx-charts-bar-vertical
+                [view]="view"
+                [scheme]="'cool'"
+                [results]="chartData"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-vertical>
+        </div> -->
     </div>
 </div>
 <ng-template #loading>

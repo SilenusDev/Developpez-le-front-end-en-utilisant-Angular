@@ -1,8 +1,8 @@
 <!-- src/app/pages/detail/detail.component.html -->
-<div class="container m-5">
+<div class="container py-5">
     <div class="card shadow-lg p-3 d-flex flex-column justify-content-center align-items-center">
         <div class="btn btn-success btn-lg m-2" >{{ country }}</div>
-        <div>
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
             <div class="btn btn-outline-success text-secondary m-2">
                 Number of participations<br>
                 <strong class="text-dark">{{ participationCount }}</strong> <!-- Affichage du nombre de participations -->
@@ -15,22 +15,22 @@
                 Total number of athletes<br>
                 <strong class="text-dark">{{ totalAthletes }}</strong> <!-- Affichage du total des athlètes -->
             </div>
-            <div class="chart-container">
-                <ngx-charts-line-chart
-                    [view]="[width, 400]" 
-                    [scheme]="'cool'"
-                    [results]="lineChartData"
-                    [gradient]="false"
-                    [xAxis]="true"
-                    [yAxis]="true"
-                    [showXAxisLabel]="true"
-                    [showYAxisLabel]="true"
-                    [xAxisLabel]="'Year'"
-                    [yAxisLabel]="'Medals Count'"
-                    [autoScale]="true">
-                </ngx-charts-line-chart>
-            </div>
-            <div class="btn btn-primary m-2" [routerLink]="['/']">Retour au Dashbord</div>
         </div>
+        <div class="chart-container py-5">
+            <ngx-charts-line-chart
+                [view]="[width, 400]" 
+                [scheme]="'cool'"
+                [results]="lineChartData"
+                [gradient]="false"
+                [xAxis]="true"
+                [yAxis]="true"
+                [showXAxisLabel]="true"
+                [showYAxisLabel]="true"
+                [xAxisLabel]="'Year'"
+                [yAxisLabel]="'Medals Count'"
+                [autoScale]="true">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="btn btn-primary m-2" [routerLink]="['/']">Retour au Dashbord</div>
     </div>
 </div>   

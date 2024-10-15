@@ -43,6 +43,7 @@ CDN bootstrap 5.3.2
 ngx-charts used for charts generation
 
 ## developpement
+application responsive
 
 ### Utilisation des Services pour Réaliser les Appels HTTP
 

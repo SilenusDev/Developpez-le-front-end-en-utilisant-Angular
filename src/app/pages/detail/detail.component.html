@@ -17,7 +17,7 @@
             </div>
             <div class="chart-container">
                 <ngx-charts-line-chart
-                    [view]="[700, 400]" 
+                    [view]="[width, 400]" 
                     [scheme]="'cool'"
                     [results]="lineChartData"
                     [gradient]="false"
@@ -30,6 +30,7 @@
                     [autoScale]="true">
                 </ngx-charts-line-chart>
             </div>
+            <div class="btn btn-primary m-2" [routerLink]="['/']">Retour au Dashbord</div>
         </div>
     </div>
 </div>   

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Olympics } from 'src/app/core/models/Olympic'; 
@@ -17,12 +17,15 @@ export class DetailComponent implements OnInit {
   public totalAthletes: number = 0; 
   public participationCount: number = 0; 
   public lineChartData: any[] = []; // Pour stocker les données du graphique
+  public width: number = 700; // Pour stocker la largeur de la fenêtre
 
   constructor(
     private route: ActivatedRoute, 
     private olympicService: OlympicService 
+    
   ) {
     this.countryDetails$ = new Observable(); 
+    this.setWidth(window.innerWidth);
   }
 
   ngOnInit(): void {
@@ -31,6 +34,24 @@ export class DetailComponent implements OnInit {
       this.loadCountryDetails(this.country); 
     });
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const windowWidth = (event.target as Window).innerWidth;
+    this.setWidth(windowWidth);
+  }
+
+  setWidth(windowWidth: number) {
+
+    if (windowWidth < 576) {
+      this.width = 300;
+    } else if (windowWidth < 768) {
+      this.width = 500;
+    } else {
+      this.width = 700;
+    }
+  }
+
 
   private loadCountryDetails(country: string): void {
     this.countryDetails$ = this.olympicService.getCountryDetails(country);

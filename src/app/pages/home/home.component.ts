@@ -1,5 +1,5 @@
 // src/app/pages/home/home.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Olympics } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   public olympics$: Observable<Olympics[] | null>;
   public chartData: { name: string; value: number }[] = [];
+  public width: number = 700; // Pour stocker la largeur de la fenêtre
 
   // Pie chart options
   view: [number, number] = [700, 400];
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private olympicService: OlympicService, private router: Router) {
     this.olympics$ = this.olympicService.getOlympics();
+    this.setWidth(window.innerWidth);
   }
 
   public numberOfJOs: number = 0; // Propriété pour le nombre de JOs
@@ -42,6 +44,23 @@ export class HomeComponent implements OnInit {
         console.error('Error loading Olympic data:', error);
       }
     );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const windowWidth = (event.target as Window).innerWidth;
+    this.setWidth(windowWidth);
+  }
+
+  setWidth(windowWidth: number) {
+
+    if (windowWidth < 576) {
+      this.width = 300;
+    } else if (windowWidth < 768) {
+      this.width = 500;
+    } else {
+      this.width = 700;
+    }
   }
 
   private transformData(olympics: Olympics[]): void {

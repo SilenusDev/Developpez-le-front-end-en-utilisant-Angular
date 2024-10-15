@@ -1,3 +1,4 @@
+// olympic.service.ts
 import { HttpClient } from '@angular/common/http'; // Importation du service HttpClient pour les requêtes HTTP
 import { Injectable } from '@angular/core'; // Importation du décorateur Injectable pour créer des services
 import { BehaviorSubject, Observable } from 'rxjs'; // Importation de BehaviorSubject et Observable de RxJS pour la gestion des flux de données

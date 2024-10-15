@@ -27,3 +27,6 @@ Once mastered, you should continue by creating the typescript interfaces inside 
 You're now ready to implement the requested features.
 
 Good luck!
+
+npm install @swimlane/ngx-charts --save
+npm install --save-dev @types/d3-shape @types/d3-scale @types/d3-selection

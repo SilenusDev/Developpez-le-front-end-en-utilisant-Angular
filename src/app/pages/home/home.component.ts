@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Olympics } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { LegendPosition } from '@swimlane/ngx-charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,17 +20,22 @@ export class HomeComponent implements OnInit {
   showLegend: boolean = true;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
-  legendPosition: LegendPosition = LegendPosition.Below;
+  
 
-  constructor(private olympicService: OlympicService) {
+  constructor(private olympicService: OlympicService, private router: Router) {
     this.olympics$ = this.olympicService.getOlympics();
   }
+
+  public numberOfJOs: number = 0; // Propriété pour le nombre de JOs
+  public numberOfCountries: number = 0; // Propriété pour le nombre de pays
 
   ngOnInit(): void {
     this.olympicService.loadInitialData().subscribe(
       (data) => {
         if (data) {
           this.transformData(data);
+          this.numberOfJOs = data.reduce((count, olympic) => count + olympic.participations.length, 0); // Calculer le nombre de JOs
+          this.numberOfCountries = data.length; // Le nombre de pays est simplement la longueur du tableau
         }
       },
       (error) => {
@@ -51,6 +56,8 @@ export class HomeComponent implements OnInit {
 
   onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    const country = data.name; // Récupérer le nom du pays
+    this.router.navigate(['/detail', country]); // Naviguer vers le détail du pays
   }
 }
 

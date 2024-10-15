@@ -1,8 +1,8 @@
 // olympic.service.ts
 import { HttpClient } from '@angular/common/http'; // Importation du service HttpClient pour les requêtes HTTP
 import { Injectable } from '@angular/core'; // Importation du décorateur Injectable pour créer des services
-import { BehaviorSubject, Observable } from 'rxjs'; // Importation de BehaviorSubject et Observable de RxJS pour la gestion des flux de données
-import { catchError, tap } from 'rxjs/operators'; // Importation des opérateurs RxJS pour le traitement des observables
+import { BehaviorSubject, Observable, of } from 'rxjs'; // Importation de BehaviorSubject et Observable de RxJS pour la gestion des flux de données
+import { catchError, map, tap } from 'rxjs/operators'; // Importation des opérateurs RxJS pour le traitement des observables
 import { Olympics } from '../models/Olympic'; // Importation du modèle de données Olympics
 
 @Injectable({
@@ -29,6 +29,18 @@ export class OlympicService {
   getOlympics(): Observable<Olympics[] | null> {
     // Méthode pour obtenir un observable des données olympiques
     return this.olympics$.asObservable(); // Retourne l'instance BehaviorSubject sous forme d'Observable
+  }
+
+  getCountryDetails(country: string): Observable<any> {
+    return this.olympics$.pipe(
+      // Filtrer les données pour obtenir les détails du pays demandé
+      map((olympics) => olympics?.find((o) => o.country === country)),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des détails du pays:', error);
+        return of(null); // Retourner un observable avec une valeur null en cas d'erreur
+      })
+      
+    );
   }
 }
 

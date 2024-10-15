@@ -1,0 +1,9 @@
+//home.component.scss
+::ng-deep {
+    .ngx-charts-tooltip-content,
+    .ngx-charts-tooltip-content.type-tooltip,
+    .tooltip-content {
+      background-color: #28a745 !important;
+      color: white !important;
+    }
+}

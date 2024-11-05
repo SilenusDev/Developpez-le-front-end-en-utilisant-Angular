@@ -1,12 +1,12 @@
 // olympic.service.ts
-import { HttpClient } from '@angular/common/http'; // Importation du service HttpClient pour les requêtes HTTP
-import { Injectable } from '@angular/core'; // Importation du décorateur Injectable pour créer des services
+import { HttpClient } from '@angular/common/http'; // Importation du service HttpClient pour effectuer des requêtes HTTP
+import { Injectable } from '@angular/core'; // Importation du décorateur Injectable pour permettre l'injection de dépendances
 import { BehaviorSubject, Observable, of } from 'rxjs'; // Importation de BehaviorSubject et Observable de RxJS pour la gestion des flux de données
 import { catchError, map, tap } from 'rxjs/operators'; // Importation des opérateurs RxJS pour le traitement des observables
 import { Olympics } from '../models/Olympic'; // Importation du modèle de données Olympics
 
 @Injectable({
-  providedIn: 'root', // Indique que le service est disponible dans toute l'application
+  providedIn: 'root', // Indique que le service est injectable dans toute l'application
 })
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json'; // Chemin vers le fichier JSON contenant les données olympiques
@@ -16,11 +16,11 @@ export class OlympicService {
 
   loadInitialData(): Observable<Olympics[]> {
     // Méthode pour charger les données depuis le fichier JSON
-    return this.http.get<Olympics[]>(this.olympicUrl).pipe( // Effectue une requête GET pour récupérer les données
+    return this.http.get<Olympics[]>(this.olympicUrl).pipe( // Effectue une requête GET pour récupérer les données olympiques
       tap((data) => this.olympics$.next(data)), // Émet les données chargées dans le BehaviorSubject
       catchError((error) => { // Gestion des erreurs lors de la requête
         console.error('Erreur lors du chargement des données olympiques:', error); // Affiche l'erreur dans la console
-        this.olympics$.next(null); // Émet null en cas d'erreur
+        this.olympics$.next(null); // Émet null en cas d'erreur pour indiquer que les données ne sont pas disponibles
         throw error; // Relance l'erreur pour une gestion ultérieure
       })
     );
@@ -31,17 +31,15 @@ export class OlympicService {
     return this.olympics$.asObservable(); // Retourne l'instance BehaviorSubject sous forme d'Observable
   }
 
-  getCountryDetails(country: string): Observable<any> {
+  getCountryDetails(country: string): Observable<Olympics | null> {
+    // Méthode pour obtenir les détails d'un pays spécifique
     return this.olympics$.pipe(
-      // Filtrer les données pour obtenir les détails du pays demandé
-      map((olympics) => olympics?.find((o) => o.country === country)),
+      map((olympics) => olympics?.find((o) => o.country === country) || null), // Cherche le pays dans la liste et retourne null s'il n'est pas trouvé
       catchError((error) => {
-        console.error('Erreur lors de la récupération des détails du pays:', error);
-        return of(null); // Retourner un observable avec une valeur null en cas d'erreur
+        console.error('Erreur lors de la récupération des détails du pays:', error); // Affiche l'erreur dans la console
+        return of(null); // Retourne un Observable de null en cas d'erreur
       })
-      
     );
   }
 }
-
 
